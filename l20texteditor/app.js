@@ -6,13 +6,30 @@ getdivarea.spellcheck = false;
 var getbtns = document.querySelectorAll(".btn");
 // console.log(getbtns); //NodeList
 
+
+
 getbtns.forEach(function (getbtn) {
   getbtn.addEventListener("click", function () {
     // var getcommand = getbtn.getAttribute("data-command");
     var getcommand = getbtn.dataset["command"];
     // console.log(getcommand);
 
-    document.execCommand(getcommand, false, null);
+    if (getcommand === "cleartext") {
+      getdivarea.innerHTML = "";
+    } else if (getcommand === "createLink" || getcommand === "insertImage") {
+      let geturl = prompt("Enter your website link", "https://");
+      document.execCommand(getcommand, false, geturl);
+    } else if (getcommand === "foreColor") {
+      // console.log(getbtn.value);
+      document.execCommand(getcommand, false, getbtn.value);
+    } else if (getcommand === "paste") {
+      navigator.clipboard.readText().then(function (cliptext) {
+        // console.log(cliptext);
+        getdivarea.innerHTML += cliptext;
+      });
+    } else {
+      document.execCommand(getcommand, false, null);
+    }
   });
 });
 
